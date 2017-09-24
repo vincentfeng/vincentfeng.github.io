@@ -185,7 +185,7 @@ native            通用的自增长
 assigned       手动生成，使用程序生存，一般不建议
 foreign           one to one 使用
 
-## Hibernate 3.6.10 Review 01 ##
+## Hibernate 3.6.10 Review - Demo##
 Hibernate 3.6.10 的目录结构比之前 3.2 改了许多,让我都有点不习惯了.
 
 1. documentation 文档资料
@@ -510,7 +510,7 @@ public class PersonTest extends TestCase {
 ```
 It seems done . If any checked exception , please join in the JUnit 4 or check the problem in detail.
 
-## Hibernate 3.6.10 Review @OneToMany ##
+## Hibernate 3.6.10 - OneToMany ##
 
 关于OnToMany
 
