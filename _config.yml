@@ -16,7 +16,7 @@ github_url: https://github.com/vincentfeng
 description: This is personnel website of Vincent Fung
 favicon: favicon.png # Image must be in assets/images
 
-url: http://vincentfeng.github.io # the base hostname & protocol for your site
+url: https://vincentfeng.github.io # the base hostname & protocol for your site
 
 ## Gem
 gems:
@@ -43,7 +43,7 @@ kramdown:
   enable_coderay: true
 
 # Disque
-disque: httpvincentfenggithubio.disqus.com
+disque: httpsvincentfenggithubio.disqus.com
 
 # Pagination
 paginate: 10
