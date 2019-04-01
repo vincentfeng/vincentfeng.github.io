@@ -1,0 +1,704 @@
+---
+layout: post
+title: C# Learn Note
+category: C#
+tags: [C#]
+---
+
+# 简介 #
+C# 微软一直推荐的技术
+
+# 基础知识 #
+ ## 转义符 ##
+    String path = "c:\\tmp\test\a.txt"; 等同于 String path = @"c:\\tmp\test\a.txt";
+    因为 加了@后里面的转义符 都不起作用了。
+ ## Convert 
+    String s = "12";
+    Convert.ToInt32(s);
+ ## 枚举 
+    定义枚举
+    enum MyEnum
+    {
+        ABC,EFG,HIJ
+    
+    }
+    使用枚举
+    MyEnum.ABC;
+ ## foreach
+    int[] array = {0,11,22,33};
+    foreach(int i in array){
+      Console.WriteLine(i);
+    }
+    Console.ReadKey();
+ ## String用法
+    namespace test.str
+    {
+         class TestString
+         {
+            public void testString(){
+                String str = "hello,vincent";
+                String[] array = str.Split(',');
+                for (int i = 0; i < array.Length; i++) {
+                    Console.WriteLine(array[i]);
+                }
+            }
+    
+            public void test2String()
+            {
+                String str = "              this is vincent .";
+                str = str.Trim();
+    
+                Console.WriteLine(str);
+                
+            }
+    
+            public void test3String()
+            {
+                String str = "aa,bb,cc,,dd,ee,ff";
+                String[] array = str.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+                foreach(String s in array){
+                    Console.WriteLine(s);
+                }
+            }
+    
+            public void test4String() { 
+    
+            }
+         }
+    }
+ ## ref用法
+    demo code:
+    
+     class TestRef
+     {
+        public void setAge(int age) {
+            age++;
+        }
+
+        public void setAgeByRef(ref int age) {
+            age++;
+        }
+     }
+    
+    // call class
+    int age = 20;
+    new TestRef().setAge(age);
+    Console.WriteLine(age);
+    new TestRef().setAgeByRef(ref age);
+    Console.WriteLine(age);
+    Console.ReadKey();
+    
+    C# 在这个点上做得比java 要强，首先java 的基本 数据类型不支持 传参应用，如果要使用传参应用，必须先将基本类型包装成一个对象才可以。而C# 则可以使用关键词ref 实现了。
+ ## 判断类型转换是否成功
+    demo code:
+     String str = Console.ReadLine();
+     int i ;
+     if(int.TryParse(str,out i)){
+      Console.WriteLine("转换结果为：{0}",i);
+     }else{
+      Console.WriteLine("转换出错");
+     }
+     
+    
+    以上代码有两个知识点：
+    1.int.TryParse 判断是否可以转换。
+    2.out 关键字的用法。
+    
+     public void testOut(out int i)
+            {
+                i = 30;
+            }
+    
+     out int 无视初始值，在方法内部必须重新定义新的值，并且将定义值返回。
+ ## 反编译
+    下载一个反编译器，可以帮助我们更好学习 vs 是怎么帮我们生产代码的。
+    
+    .net 的bean 写法
+    class Person
+        {
+            public int age;
+    
+            public String name
+            {
+                get;
+                set;
+            }
+        }
+    
+    可以和 java 的类比较一下
+    class Person
+    {
+     public int age;
+     private String name;
+     public void setName(String name){
+      this.name = name;
+     }
+     public String getName(String name){
+      return this.name;
+     }
+    }
+    
+    代码都可以有工具自动生成，相比操作，java 的操作更熟悉，但是代码的简洁性，C#更好。
+    
+    .net reflector 是一个 可以反编译dll 和 exe 文件的 工具。
+ ## const 用法
+    c# 的 const  相当于 java 的 final 
+ ## IO
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.IO;
+    
+    namespace io_test
+    {
+        class Program
+        {
+            private const string FILE_NAME = "Test.data";
+            static void Main(string[] args)
+            {
+                test1();
+    
+                Console.ReadKey();
+            }
+    
+            static void test1() {
+                DirectoryInfo dir = new DirectoryInfo(@"D:/vincent");
+                Console.WriteLine(dir.ToString());
+                foreach (FileInfo f in dir.GetFiles("*.cs"))
+                {
+                    String name = f.FullName;
+                    long size = f.Length;
+                    DateTime creationTime = f.CreationTime;
+                    Console.WriteLine("{0,-12:N0} {1,-20:g} {2}", size,
+                       creationTime, name);
+    
+                    StreamReader sr = null;
+                    StreamWriter sw = null;
+    
+    
+                    /*Write File 这个是从头开始写，把已经有了的内容覆盖。*/
+                    try
+                    {
+                        sw = new StreamWriter(f.OpenWrite());
+                        sw.WriteLine("111111111");
+                        sw.WriteLine("22222222");
+                        sw.Flush();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.StackTrace);
+                    }
+                    finally
+                    {
+                        sw.Close();
+                    }
+    
+                    /* Append File 这是在文件尾追加内容 */
+                    try
+                    {
+                        sw = f.AppendText();
+                        sw.WriteLine("ggg");
+                        sw.WriteLine("ccc");
+                        sw.Flush();
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e.StackTrace);
+                    }
+                    finally
+                    {
+                        sw.Close();
+                    }
+                   
+                    /* Read file 读取文件 */
+                    try
+                    {
+                        sr = f.OpenText();
+                        String s = sr.ReadLine();
+                        while (s != null)
+                        {
+                            Console.WriteLine(s);
+                            s = sr.ReadLine();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.StackTrace);
+                    }
+                    finally
+                    {
+                        sr.Close();
+                    }
+                    
+    
+                }
+            }
+        }
+    }
+    
+    IO 是一项很重要的技能，请一定要弄清楚。
+    
+    参考文献
+    System.IO 命名空间包含允许在数据流和文件上进行同步和异步读取及写入的类型。
+    
+    以下的区别有助于澄清文件和流的差异。文件是一些具有永久存储及特定顺序的字节组成的一个有序的、具有名称的集合。因此，对于文件，人们常会想到目录路径、磁盘存储、文件和目录名等方面。相反，流提供一种向后备存储器写入字节和从后备存储器读取字节的方式，后备存储器可以为多种存储媒介之一。正如除磁盘外存在多种后备存储器一样，除文件流之外也存在多种流。例如，还存在网络流、内存流和磁带流等。
+    
+    基本的文件 I/O
+    
+    抽象基类 Stream 支持读取和写入字节。Stream 集成了异步支持。其默认实现根据其相应的异步方法来定义同步读取和写入，反之亦然。
+    
+    所有表示流的类都是从 Stream 类继承的。Stream 类及其派生类提供数据源和储存库的一般视图，使程序员不必了解操作系统和基础设备的具体细节。
+    
+    流涉及三个基本操作： 
+    
+    
+    
+    可以从流读取。读取是从流到数据结构（如字节数组）的数据传输。 
+    
+    可以向流写入。写入是从数据结构到流的数据传输。 
+    
+    流可以支持查找。查找是对流内的当前位置进行查询和修改。 
+    
+    
+    根据基础数据源或储存库，流可能只支持这些功能中的一部分。例如，NetworkStreams 不支持查找。Stream 的 CanRead、CanWrite 和 CanSeek 属性及其派生类决定不同的流所支持的操作。
+    
+    从 System.Object 派生的 I/O 类
+    
+    
+    BinaryReader 和 BinaryWriter 从 Streams 读取或向 Streams 写入编码的字符串和基元数据类型。
+    
+    File 提供用于创建、复制、删除、移动和打开文件的静态方法，并协助创建 FileStream 对象。FileInfo 类提供实例方法。
+    
+    Directory 提供通过目录和子目录进行创建、移动和枚举的静态方法。DirectoryInfo 类提供实例方法。
+    
+    Path 提供以跨平台的方式处理目录字符串的方法和属性。
+    
+    File、Path 和 Directory 是密封（在 Microsoft Visual Basic 中为 NotInheritable）类。可以创建这些类的新实例，但它们可以没有派生类。
+    
+    System.IO.FileSystemInfo 及其派生类
+    
+    
+    FileSystemInfo 是 FileInfo 和 DirectoryInfo 对象的抽象基类。
+    
+    FileInfo 提供用于创建、复制、删除、移动和打开文件的实例方法，并协助创建 FileStream 对象。File 类提供静态方法。
+    
+    DirectoryInfo 提供通过目录和子目录进行创建、移动和枚举的实例方法。Directory 类提供静态方法。
+    
+    FileInfo 和DirectoryInfo 是密封（在 Microsoft Visual Basic 中为 NotInheritable）类。可以创建这些类的新实例，但它们可以没有派生类。
+    
+    从 System.IO.Stream 派生的类
+    
+    
+    FileStream 支持通过其 Seek 方法随机访问文件。默认情况下，FileStream 以同步方式打开文件，但它也支持异步操作。File 包含静态方法，而 FileInfo 包含实例方法。
+    
+    MemoryStream 是一个非缓冲的流，可以在内存中直接访问它的封装数据。该流没有后备存储器，可用作临时缓冲区。
+    
+    NetworkStream 表示网络连接上的 Stream。虽然 NetworkStream 是从 Stream 派生的，但它不是 System.IO 命名空间的一部分，而是在 System.Net.Sockets 命名空间中。
+    
+    CryptoStream 将数据流链接到加密转换。虽然 CryptoStream 是从 Stream 派生的，但它不是 System.IO 命名空间的一部分，而是在 System.Security.Cryptography 命名空间中。
+    
+    BufferedStream 是向另一个 Stream（例如 NetworkStream）添加缓冲的 Stream。（FileStream 内部已具有缓冲，MemoryStream 不需要缓冲）。BufferedStream 对象可以围绕某些类型的流来构成以提高读写性能。缓冲区是内存中的字节块，用于缓存数据，从而减少对操作系统的调用次数。
+    
+    System.IO.TextReader 及其派生类
+    
+    
+    TextReader 是 StreamReader 和 StringReader 对象的抽象基类。抽象 Stream 类的实现用于字节输入和输出，而 TextReader 的实现用于 Unicode 字符输出。
+    
+    StreamReader 通过使用 Encoding 进行字符和字节的转换，从 Streams 中读取字符。StreamReader 具有一个构造函数，该构造函数根据是否存在专用于 Encoding 的 preamble（例如一个字节顺序标记）来尝试确定给定 Stream 的正确 Encoding 是什么。
+    
+    StringReader 从 Strings 中读取字符。StringReader 允许您用相同的 API 来处理 Strings，因此您的输出可以是 String 或以任何编码表示的 Stream。
+    
+    System.IO.TextWriter 及其派生类
+    
+    
+    TextWriter 是 StreamWriter 和 StringWriter 对象的抽象基类。抽象 Stream 类的实现用于字节输入和输出，而 TextWriter 的实现用于 Unicode 字符输出。
+    
+    StreamWriter 通过使用 Encoding 将字符转换为字节，向 Streams 写入字符。
+    
+    StringWriter 向 Strings 写入字符。StringWriter 允许您用相同的 API 来处理 Strings，这样您的输出可以是 String 或以任何编码表示的 Stream。
+    
+    枚举数
+    
+    
+    FileAccess、FileMode 和 FileShare 枚举定义某些 FileStream 和 IsolatedStorageFileStream 构造函数及某些 File.Open 重载方法使用的常数。这些常数影响创建、打开和共享基础文件的方式。
+    
+    SeekOrigin 枚举数定义用来指定随机访问文件入口点的常数。这些常数和字节偏移量一起使用。
+    
+    I/O 和安全性
+    
+    
+    当在 System.IO 命名空间中使用类时，要使访问被允许，则必须满足诸如访问控制列表 (ACL) 等操作系统安全性要求。该要求是在所有 FileIOPermission 要求之外的要求。
+    
+    警告 Internet 和 Intranet 的默认安全策略不允许访问文件。因此，如果您在编写将通过 Internet 下载的代码，则不要使用“regular”（即非隔离存储）IO 类。请改用独立存储。
+    
+    警告 当文件或网络流打开时，只有在构造流时才执行安全检查。因此，当将这些流分发给受信度较低的代码或应用程序域时，请格外小心。
+    
+    创建目录列表
+    
+    
+    下面的代码示例显示了如何使用 IO 类来创建目录列表。
+    [C#]
+    using System;
+    using System.IO;
+    class DirectoryLister
+    {
+       public static void Main(String[] args)
+       {
+          DirectoryInfo dir = new DirectoryInfo(".");
+          foreach (FileInfo f in dir.GetFiles("*.cs")) 
+          {
+             String name = f.FullName;
+             long size = f.Length;
+             DateTime creationTime = f.CreationTime;
+             Console.WriteLine("{0,-12:N0} {1,-20:g} {2}", size, 
+                creationTime, name);
+          }
+       }
+    }
+    
+    
+    在本示例中，DirectoryInfo 对象是当前目录，用 (".") 表示，代码列出了当前目录中具有 .cs 扩展名的所有文件，同时还列出了这些文件的大小、创建时间和名称。假设 C:\MyDir 的 \Bin 子目录中存在多个 .cs 文件，该代码的输出可能如下所示：
+    953          7/20/2000 10:42 AM   C:\MyDir\Bin\paramatt.cs
+    664          7/27/2000 3:11 PM    C:\MyDir\Bin\tst.cs
+    403          8/8/2000 10:25 AM    C:\MyDir\Bin\dirlist.cs
+    
+    
+    如果您要另一个目录中文件的列表，例如 C:\ root 目录，请记着使用反斜杠 (\) 转义符，如“C:\\”中的反斜杠。您也可以使用 Unix 样式的斜杠，如“C:/”中的斜杠。
+    
+    对刚创建的数据文件进行读取和写入
+    
+    
+    BinaryWriter 和 BinaryReader 类用于读取和写入数据，而不是字符串。下面的代码示例示范了向新的、空文件流 (Test.data) 写入数据及从该文件读取数据。在当前目录中创建了数据文件之后，也就同时创建了相关的 BinaryWriter 和 BinaryReader，BinaryWriter 用于向 Test.data 写入整数 0 到 10，Test.data 在文件尾留下了一个文件指针。在将文件指针设置回初始位置后，BinaryReader 读出指定的内容。
+    [C#]
+    using System;
+    using System.IO;
+    class MyStream {
+       private const string FILE_NAME = "Test.data";
+       public static void Main(String[] args) {
+          // Create the new, empty data file.
+          if (File.Exists(FILE_NAME)) {
+             Console.WriteLine("{0} already exists!", FILE_NAME);
+             return;
+          }
+          FileStream fs = new FileStream(FILE_NAME, FileMode.CreateNew);
+          // Create the writer for data.
+          BinaryWriter w = new BinaryWriter(fs);
+          // Write data to Test.data.
+          for (int i = 0; i < 11; i++) {
+             w.Write( (int) i);
+          }
+          w.Close();
+          fs.Close();
+          // Create the reader for data.
+          fs = new FileStream(FILE_NAME, FileMode.Open, FileAccess.Read);
+          BinaryReader r = new BinaryReader(fs);
+          // Read data from Test.data.
+          for (int i = 0; i < 11; i++) {
+             Console.WriteLine(r.ReadInt32());
+             w.Close();
+          }
+       }
+    }
+    
+    
+    如果 Test.data 已存在于当前目录中，则引发一个 IOException。始终使用 FileMode.Create 创建新文件，而不引发 IOException。
+    
+    打开并附加到日志文件
+    
+    
+    StreamWriter 和 StreamReader 向流写入字符并从流读取字符。下面的代码示例打开 log.txt 文件（如果文件不存在则创建文件）以进行输入，并将信息附加到文件尾。然后将文件的内容写入标准输出，以便显示出来。
+    [C#]
+    using System;
+    using System.IO;
+    class DirAppend
+    {
+       public static void Main(String[] args)
+       {
+          StreamWriter w = File.AppendText("log.txt");
+          Log ("Test1", w);
+          Log ("Test2", w);
+          // Close the writer and underlying file.
+          w.Close();
+          // Open and read the file.
+          StreamReader r = File.OpenText("log.txt");
+          DumpLog (r);
+       }
+    
+       public static void Log (String logMessage, TextWriter w)
+       {
+          w.Write("\r\nLog Entry : ");
+          w.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(),
+             DateTime.Now.ToLongDateString());
+          w.WriteLine("  :");
+          w.WriteLine("  :{0}", logMessage);
+          w.WriteLine ("-------------------------------");
+          // Update the underlying file.
+          w.Flush(); 
+       }
+    
+       public static void DumpLog (StreamReader r)
+       {
+          // While not at the end of the file, read and write lines.
+          String line;
+          while ((line=r.ReadLine())!=null)
+          {
+             Console.WriteLine(line);
+          }
+          r.Close();
+       }
+    }
+    
+    
+    从文件读取文本
+    
+    
+    下面的代码示例读取整个文件，并在检测到文件尾时发出通知。
+    [C#]
+    using System;
+    using System.IO;
+    public class TextFromFile {
+       private const string FILE_NAME = "MyFile.txt";
+       public static void Main(String[] args) {
+          if (!File.Exists(FILE_NAME)) {
+             Console.WriteLine("{0} does not exist!", FILE_NAME);
+             return;
+          }
+          StreamReader sr = File.OpenText(FILE_NAME);
+          String input;
+          while ((input=sr.ReadLine())!=null) {
+             Console.WriteLine(input);
+          }
+          Console.WriteLine ("The end of the stream has been reached.");
+       sr.Close();
+       }
+    }
+    
+    
+    此代码通过调用 File.OpenText 创建一个指向 MyFile.txt 的 StreamReader。StreamReader.ReadLine 将每一行都返回为一个字符串。当没有要读取的字符时，一条消息显示该情况，然后流关闭。
+    
+    向文件写入文本
+    
+    
+    下面的代码示例创建一个新文本文件并向其写入一个字符串。
+    [C#]
+    using System;
+    using System.IO;
+    public class TextToFile {
+       private const string FILE_NAME = "MyFile.txt";
+       public static void Main(String[] args) {
+          if (File.Exists(FILE_NAME)) {
+             Console.WriteLine("{0} already exists!", FILE_NAME);
+             return;
+          }
+          StreamWriter sr = File.CreateText(FILE_NAME);
+          sr.WriteLine ("This is my file.");
+          sr.WriteLine ("I can write ints {0} or floats {1}, and so on.", 
+             1, 4.2);
+          sr.Close();
+       }
+    }
+    
+    
+    从字符串中读取字符
+    
+    
+    下面的代码示例允许您在现有字符串中从指定的位置开始读取一定数目的字符。使用 StringReader 完成此操作，如下所示。
+    
+    代码定义字符串并将其转换为字符数组，然后，可以使用适当的 StringReader.Read 方法按需要读取该字符数组。
+    [C#]
+    using System;
+    using System.IO;
+    public class CharsFromStr
+    {
+       public static void Main(String[] args)
+       {
+       // Create a string to read characters from.
+       String str = "Some number of characters";
+       // Size the array to hold all the characters of the string,
+       // so that they are all accessible.
+       char[] b = new char[24];
+       // Create a StringReader and attach it to the string.
+       StringReader sr = new StringReader(str);
+       // Read 13 characters from the array that holds the string, starting
+       // from the first array member.
+       sr.Read(b, 0, 13);
+       // Display the output.
+       Console.WriteLine(b);
+       // Close the StringReader.
+    sr.Close();
+       }
+    }
+ ## ADO.net
+    .net 连接 数据的基本对象
+    .net                                               java
+    SqlConnection       -------------  Connection
+    SqlCommand         -------------   Statement
+    SqlDataReader      -------------   ResultSet
+    
+    需要注意的就是，SqlConnection 和 SqlDataReader 除了要close 外 还要释放。所以在写法上和java不一样，但是也可以像java那么些。下面给出参考代码。
+    
+    Code:
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Data.SqlClient;
+    
+    namespace ConsoleApplication1.test1
+    {
+        class BaseTest
+        {
+            public void insert() 
+            {
+                Console.WriteLine("begin .....");
+                StringBuilder strConnection = new StringBuilder();
+                strConnection.Append("user id=sa;password= password;");
+                strConnection.Append("initial catalog=Test1;Address=127.0.0.1;");
+                strConnection.Append("Connect Timeout=30");
+    
+                using (SqlConnection objConnection = new SqlConnection(strConnection.ToString()))
+                {
+    
+                    objConnection.Open();
+                    using (SqlCommand cmd = objConnection.CreateCommand()) {
+                        cmd.CommandText = "insert into users (id,name,age,password) values ('002','yy','26','abc123')";
+                        cmd.ExecuteNonQuery();
+                        Console.WriteLine("insert successful.s");
+                    }
+                    Console.WriteLine(objConnection);
+                    objConnection.Close();
+                }
+               
+                Console.ReadKey();
+            }
+    
+            /**/
+            public void update()
+            {
+                Console.WriteLine("begin .....");
+                StringBuilder strConnection = new StringBuilder();
+                strConnection.Append("user id=sa;password=password;");
+                strConnection.Append("initial catalog=Test1;Address=127.0.0.1;");
+                strConnection.Append("Connect Timeout=5");
+    
+                SqlConnection objConnection = null;
+                SqlCommand cmd = null;
+                try
+                {
+                    objConnection = new SqlConnection(strConnection.ToString());
+                    objConnection.Open();
+                    cmd = objConnection.CreateCommand();
+                    cmd.CommandText = "update users set age = '26' where id = '001'";
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("update successful.s");
+                    Console.WriteLine(objConnection);
+                }
+                catch (SqlException sqle)
+                {
+                    Console.WriteLine(sqle.StackTrace);
+                }
+                finally 
+                {
+                    cmd.Dispose();
+                    objConnection.Close();
+                    objConnection.Dispose();
+                }
+    
+                Console.ReadKey();
+            }
+    
+            public void delete() 
+            {
+            
+            }
+    
+            public void select() 
+            {
+                Console.WriteLine("begin .....");
+                StringBuilder strConnection = new StringBuilder();
+                strConnection.Append("user id=sa;password=password;");
+                strConnection.Append("initial catalog=Test1;Address=127.0.0.1;");
+                strConnection.Append("Connect Timeout=30");
+    
+                using (SqlConnection objConnection = new SqlConnection(strConnection.ToString()))
+                {
+    
+                    objConnection.Open();
+                    using (SqlCommand cmd = objConnection.CreateCommand())
+                    {
+                        cmd.CommandText = "select * from users";
+                        SqlDataReader reader = null;
+                        using (reader = cmd.ExecuteReader())
+                        { 
+                            while (reader.Read()) 
+                            {
+                                Console.WriteLine(String.Format("{0},{1},{2},{3}",reader[0],reader[1],reader[2],reader[3]));
+                            }
+                            reader.Close();
+                        }
+                        Console.WriteLine("query successful.s");
+                    }
+                    Console.WriteLine(objConnection);
+                    objConnection.Close();
+                }
+    
+                Console.ReadKey();
+            }
+        }
+    }
+ ## ADO.net 防止SQL注入
+    注意问题
+    .net 的 connection  不单单需要close 还需要 释放资源。
+    SqlCommand.ExecuteScalar 只返回第一行第一列a的数据。
+    reader.GetOrdinal("column");
+    原来 dispose 已经内部帮我们close 。所以我们只需要，dispose就可以了。
+    where Password=@P    ||       ？ = SqlParmater("P",password)     ||       SqlCommand.Parameters.Add(new SqlParameter("P",password));
+    ---------------------
+    示例代码
+    public void insert() 
+    {
+        Console.WriteLine("begin .....");
+        StringBuilder strConnection = new StringBuilder();
+        strConnection.Append("user id=sa;password=abc!=123;");
+        strConnection.Append("initial catalog=Test1;Address=127.0.0.1;");
+        strConnection.Append("Connect Timeout=30");
+
+        using (SqlConnection objConnection = new SqlConnection(strConnection.ToString()))
+        {
+
+            objConnection.Open();
+            using (SqlCommand cmd = objConnection.CreateCommand()) {
+                cmd.CommandText = "insert into users (id,name,age,password) values (@id,@name,@age,@password)";
+                cmd.Parameters.Add(new SqlParameter("@id", "003"));
+                cmd.Parameters.Add(new SqlParameter("@name", "点点"));
+                cmd.Parameters.Add(new SqlParameter("@age", "12"));
+                cmd.Parameters.Add(new SqlParameter("@password", "003"));
+                cmd.ExecuteNonQuery();
+                Console.WriteLine("insert successful.s");
+            }
+            Console.WriteLine(objConnection);
+            objConnection.Close();
+        }
+       
+        Console.ReadKey();
+    }
+ ## 读取配置文件方法
+    Step 1 . at quote include System.configuration.
+    Step 2. new an application configuration file .
+      <?xml version="1.0" encoding="utf-8" ?> 
+       <configuration> 
+         <configSections> </configSections> 
+        <connectionStrings> 
+          <add name="ConsoleApplication1.Properties.Settings.TEST1ConnectionString" connectionString="user id=sa;password=password;initial catalog=Test1;Address=127.0.0.1;Connect Timeout=30" providerName="System.Data.SqlClient" />        </connectionStrings> 
+       </configuration>
+    
+     using code:
+          String strConnection = ConfigurationManager.ConnectionStrings["ConsoleApplication1.Properties.Settings.TEST1ConnectionString"].ConnectionString;
+    
+    The greed code is key .
+ 
+
+
+
+
