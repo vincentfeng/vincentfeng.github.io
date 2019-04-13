@@ -6,26 +6,27 @@ tags: [hibernate,java]
 ---
 
 ## 测试项目 ##
-1、新建java项目
-2、创建User Library,加入如下jar
+    1、新建java项目
+    2、创建User Library,加入如下jar
+        - HIBERNATE_HOME/hibernate3.jar
+        - HIBERNATE_HOME/lib/*.jar
+        - MySql jdbc驱动
+    3、创建hibernate配置文件hibernate.cfg.xml，为了便于调试最好加入log4j配置文件
+    4、定义实体类
+    5、定义User类的映射文件User.hbm.xml
+    6、将User.hbml.xml文件加入到hibernate.cfg.xml文件中
+    7、将实体类生成数据库表
+    8、开发客户端
 
-- HIBERNATE_HOME/hibernate3.jar
-- HIBERNATE_HOME/lib/*.jar
-- MySql jdbc驱动
-
-3、创建hibernate配置文件hibernate.cfg.xml，为了便于调试最好加入log4j配置文件
-4、定义实体类
-5、定义User类的映射文件User.hbm.xml
-6、将User.hbml.xml文件加入到hibernate.cfg.xml文件中
-7、将实体类生成数据库表
-8、开发客户端
-
-为了方便跟踪sql执行，在hibernate.cfg.xml文件中加入<property name="hibernate.show_sql">true</property>
+为了方便跟踪sql执行，在hibernate.cfg.xml文件中加入
+``` xml
+<property name="hibernate.show_sql">true</property>
+``` 
 代码实现
 
 ### hibernate.cfg.xml ###
 
-```xml
+``` xml
 <!DOCTYPE hibernate-configuration PUBLIC
  "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
  "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
@@ -44,7 +45,7 @@ tags: [hibernate,java]
 </hibernate-configuration>
 ```
 ### User.java ###
-```java
+``` java
 package com.hibernate;
 
 import java.util.Date;
@@ -102,8 +103,10 @@ public class User {
  }
 }
 ```
+
 ### User.hbm.xml ###
-```xml
+
+``` xml
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC 
  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
@@ -121,7 +124,8 @@ public class User {
 </hibernate-mapping>
 ```
 ### Client.java ###
-```java
+
+``` java
 package com.bjsxt.hibernate;
 
 import java.util.Date;
@@ -174,40 +178,37 @@ public class Client {
  }
 }
 ```
-###[log4j.properties 配置](https://vincentfeng.github.io/log4j/2011/09/23/log4j-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97-%E4%B8%80.html)###
+### [log4j.properties 配置](https://vincentfeng.github.io/java/2011/06/12/Log4j-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97-%E4%B8%80.html) ###
 详细查看链接文章
 
 ## 主键生成策略 ##
 
-uuid               10w年重复一次的 32位字符串
-guid               Mysql 和 MsSQL 使用的，生成16位字符串
-native            通用的自增长
-assigned       手动生成，使用程序生存，一般不建议
-foreign           one to one 使用
+    uuid               10w年重复一次的 32位字符串
+    guid               Mysql 和 MsSQL 使用的，生成16位字符串
+    native            通用的自增长
+    assigned       手动生成，使用程序生存，一般不建议
+    foreign           one to one 使用
 
-## Hibernate 3.6.10 Review - Demo##
+## Hibernate 3.6.10 Review - Demo ##
 Hibernate 3.6.10 的目录结构比之前 3.2 改了许多,让我都有点不习惯了.
 
-1. documentation 文档资料
-
-2. lib 支持类
-	- jpa 强烈建议使用
-	- optional 可选择 lib , 有连接池和缓存.
-	- required 必须的支持 lib.
-
-3. project
-	- etc config file .
-	- source code.
-
-4. hibernate3.jar
-
+    1. documentation 文档资料
+    2. lib 支持类
+        - jpa 强烈建议使用
+        - optional 可选择 lib , 有连接池和缓存.
+        - required 必须的支持 lib.
+    3. project
+        - etc config file .
+        - source code.
+    4. hibernate3.jar
+    
 包结构弄清晰了,开始下一步. 做些简单的回忆例子.
 
 hibernate 的例子分两类,1. hbm配置, 2. 标注.
 
 ### hibernate.cfg.xml ###
 
-```xml
+``` xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
@@ -249,7 +250,7 @@ hibernate 的例子分两类,1. hbm配置, 2. 标注.
 </hibernate-configuration>
 ```
 ### Event.hbm.xml ###
-```xml
+``` xml
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
@@ -267,8 +268,9 @@ hibernate 的例子分两类,1. hbm配置, 2. 标注.
 
 </hibernate-mapping>
 ```
+
 ### Event.java ###
-```java
+``` java
 package com.demo;
 
 import java.util.Date;
@@ -314,8 +316,9 @@ public class Event {
 	}
 }
 ```
+
 Create a test class , for test the CURD operation
-```java
+``` java
 package com.demo;
 
 import java.util.Date;
@@ -374,12 +377,12 @@ public class NativeApiIllustrationTest extends TestCase {
 Do not for get download H2 DB, H2 DB is for test .
 
 ### hibernate.cfg.xml ###
-```xml
+``` xml
 <mapping class="com.demo.Person" />
 ```
 
 ### Person.java ###
-```java
+``` java
 package com.demo;
 
 import java.util.Date;
@@ -452,7 +455,7 @@ public class Person {
 }
 ```
 ### PersonTest.java ###
-```java
+``` java
 package com.demo;
 
 import java.util.Date;
@@ -512,28 +515,22 @@ It seems done . If any checked exception , please join in the JUnit 4 or check t
 
 ## Hibernate 3.6.10 - OneToMany ##
 
-关于OnToMany
+关于OnToMany 总共有5个参数.
 
-总共有5个参数.
+    - cascade (eg. CascadeType.ALL);
+    - fetch      (eg. FetchType.LAZY);
+    - orphanRemoval (eg. true);
+    - targetEntity (eg. Person.class);
+    - mappedBy (eg. "teamId");
 
-- cascade (eg. CascadeType.ALL);
-- fetch      (eg. FetchType.LAZY);
-- orphanRemoval (eg. true);
-- targetEntity (eg. Person.class);
-- mappedBy (eg. "teamId");
-
-1. cascade ,级联配置 . 有好几个类型. 要根据实际情况配置, 例如级联删除,新增,更新之类的. 但是级联删除确实要小心,反正我一般不使用级联删除. 
-
-2. fetch , 性能配置, 是不是LAZY , 要看情况,但是很多时候大家都会选择LAZY.
-
-3. orphanRemoval （可选 — 默认为 false）标记这个集合作为双向关联关系中的方向一端。
-
-4. targetEntity 对应多个实体类的class.
-
-5. mappedBy 简单来说就是一对多的外键.
+    1. cascade ,级联配置 . 有好几个类型. 要根据实际情况配置, 例如级联删除,新增,更新之类的. 但是级联删除确实要小心,反正我一般不使用级联删除. 
+    2. fetch , 性能配置, 是不是LAZY , 要看情况,但是很多时候大家都会选择LAZY.
+    3. orphanRemoval （可选 — 默认为 false）标记这个集合作为双向关联关系中的方向一端。
+    4. targetEntity 对应多个实体类的class.
+    5. mappedBy 简单来说就是一对多的外键.
 
 PS: 为了测试annotations ,查了很多资料,发现annotations 不太够全面.还是用 hbm.xml 比较好. 因为xml 有更详细的配置.
-```xml
+``` xml
 <bag name="member" cascade="save-update" lazy="true" inverse="false" >
 	<key column="teamId"></key>
 	<one-to-many class="com.demo.Person" />

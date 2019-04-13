@@ -5,7 +5,9 @@ category: Spring Boot
 tags: [java,spring boot]
 ---
 
-```properties
+配置大全
+
+``` properties
 
 # ===================================================================  
 # COMMON SPRING BOOT PROPERTIES  
