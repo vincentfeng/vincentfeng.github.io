@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Hibernate 入门系列（一）
+title: Hibernate 入门系列
 category: hibernate
 tags: [hibernate,java]
 ---
