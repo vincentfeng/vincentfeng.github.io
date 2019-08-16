@@ -30,5 +30,10 @@
         // Enable bootstrap tooltip
         $("body").tooltip({ selector: '[data-toggle=tooltip]' });
 
+
+        {% for post in site.posts %}
+            console.log("test" + {{ site.url  }}});
+        {% endfor %}
+
     });
 </script>
