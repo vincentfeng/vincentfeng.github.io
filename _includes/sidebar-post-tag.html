@@ -5,7 +5,7 @@
         <a href="/sub-blog">
             <li class="list-group-item">
                 {{ category | first }}
-                <span class="badge">{{ category[1].size }}</span>
+                <span class="badge">{{ category[1].size }},{{request.flag}}}</span>
             </li>
         </a>
         {% endfor %}
