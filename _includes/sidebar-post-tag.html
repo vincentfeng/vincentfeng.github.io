@@ -2,10 +2,12 @@
 <div id="blog-categories">
     <ul class="list-group">
         {% for category in site.categories %}
-        <li class="list-group-item">
-            {{ category | first }}
-            <span class="badge">{{ category[1].size }}</span>
-        </li>
+        <a href="/sub-blog">
+            <li class="list-group-item">
+                {{ category | first }}
+                <span class="badge">{{ category[1].size }}</span>
+            </li>
+        </a>
         {% endfor %}
     </ul>
 
