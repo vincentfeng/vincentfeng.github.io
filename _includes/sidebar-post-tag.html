@@ -5,13 +5,13 @@
             {% if (category | first) ==  'java' %}
                 <a href="/java-blog">
                     <li class="list-group-item">
-                        {{ category | first }}++++{{ category }}
+                        {{ category | first }}+++{{category.category}}}
                         <span class="badge">{{ category[1].size }}</span>
                     </li>
                 </a>
             {% else  %}
                 <li class="list-group-item">
-                    {{ category | first }}--------
+                    {{ category | first }}
                     <span class="badge">{{ category[1].size }}</span>
                 </li>
             {% endif %}
