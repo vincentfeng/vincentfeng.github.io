@@ -2,19 +2,10 @@
 <div id="blog-categories">
     <ul class="list-group">
         {% for category in site.categories %}
-            {% if {category | first} ==  'java' %}
-                <a href="/java-blog">
-                    <li class="list-group-item">
-                        {{ category | first }} ++ {{ category[1].category }}
-                        <span class="badge">{{ category[1].size }}</span>
-                    </li>
-                </a>
-            {% else  %}
-                <li class="list-group-item">
-                    {{ category | first }}
-                    <span class="badge">{{ category[1].size }}</span>
-                </li>
-            {% endif %}
+            <li class="list-group-item">
+                <b>{{ category | first }}</b>
+                <span class="badge">{{ category[1].size }}</span>
+            </li>
         {% endfor %}
     </ul>
 
@@ -22,7 +13,11 @@
 <script type="text/javascript">
 
     $(document).ready(function(){
-        $("#blog-categories li").css('text-transform','capitalize')
+        $("#blog-categories li").css('text-transform','capitalize');
+
+        if ( $(".list-group-item b").eq(0).html() == 'java'){
+            $(".list-group-item b").eq(0).html("<a href='/java-blog'>java</a>");
+        }
     });
 
 </script>
