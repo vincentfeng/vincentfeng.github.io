@@ -1,8 +1,8 @@
 ---
 layout: page
-title: All Sub Blogs
+title: Java Blogs
 subtitle: <span class="mega-octicon octicon-clippy"></span>&nbsp;&nbsp; Take notes about everything new
-menu: sub-blog
+menu: java-blog
 css: ['blog-page.css']
 ---
-{% include sub-blog-page.html %}
+{% include java-blog-page.html %}
