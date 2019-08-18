@@ -5,7 +5,7 @@
             {% if (category | first) ==  'java' %}
                 <a href="/java-blog">
                     <li class="list-group-item">
-                        {{ category | first }}++++
+                        {{ category | first }}++++{{ category }}
                         <span class="badge">{{ category[1].size }}</span>
                     </li>
                 </a>
