@@ -2,10 +2,10 @@
 <div id="blog-categories">
     <ul class="list-group">
         {% for category in site.categories %}
-            {% if (category | first) ==  'java' %}
+            {% if {category | first} ==  'java' %}
                 <a href="/java-blog">
                     <li class="list-group-item">
-                        {{ category | first }}+++{{category.category}}}
+                        {{ category | first }}
                         <span class="badge">{{ category[1].size }}</span>
                     </li>
                 </a>
