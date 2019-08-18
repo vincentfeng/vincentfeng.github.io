@@ -2,7 +2,7 @@
 <div id="blog-categories">
     <ul class="list-group">
         {% for category in site.categories %}
-            {% if category ==  'java' %}
+            {% if (category | first) ==  'java' %}
                 <a href="/java-blog">
                     <li class="list-group-item">
                         {{ category | first }}
