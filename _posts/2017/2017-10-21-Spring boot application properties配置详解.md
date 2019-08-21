@@ -1,7 +1,7 @@
 ---
 layout: post
 title: spring boot application properties 配置详解
-category: Spring Boot
+category: java
 tags: [java,spring boot]
 ---
 
