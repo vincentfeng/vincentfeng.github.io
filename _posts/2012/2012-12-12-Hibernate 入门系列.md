@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Hibernate 入门系列
-category: hibernate
+category: java
 tags: [hibernate,java]
 ---
 

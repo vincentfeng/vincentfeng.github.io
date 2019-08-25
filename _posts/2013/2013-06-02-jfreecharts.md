@@ -1,7 +1,7 @@
 ---
 layout: post
 title: JfreeCharts Demo
-category: jfreecharts
+category: java
 tags: [java, jfreecharts]
 ---
 

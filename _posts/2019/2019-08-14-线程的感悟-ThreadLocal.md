@@ -1,8 +1,8 @@
 ---
 layout: post
-title: ThreadLocal例子
+title: 线程的感悟-ThreadLocal
 category: java
-tags: [java]
+tags: [java,线程]
 ---
 
 # ThreadLocal例子 #

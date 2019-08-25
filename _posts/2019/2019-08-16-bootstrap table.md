@@ -5,7 +5,7 @@ category: javascript
 tags: [javascript,bootstrap]
 ---
 
-# BootStrap table #
+# Bootstrap table #
 
 ## Home ##
 https://bootstrap-table.com/  如果点进去看懂了，就不要往下看了。看不懂的话，往下看也没有什么意思。

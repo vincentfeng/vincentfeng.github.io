@@ -1,8 +1,8 @@
 ---
 layout: post
 title: MySQL Index
-category: MySQL
-tags: [mysql]
+category: database
+tags: [database,mysql]
 ---
 
 Quick note about MySQL Index.
