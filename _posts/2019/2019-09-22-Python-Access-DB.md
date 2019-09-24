@@ -5,7 +5,7 @@ category: python
 tags: [python,sqlite3]
 ---
 
-# Python Access DB#
+# Python Access DB #
 
 ## sqlite3 ##
 
