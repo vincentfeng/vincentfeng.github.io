@@ -11,7 +11,7 @@ collections是Python内建的一个集合模块，提供了许多有用的集合
 
 ## collections ##
 
-### 代码 ###
+### namedtuple ###
 
 ```python 
 #!/usr/bin/env python3
@@ -33,12 +33,28 @@ print(c.x)
 print(c.y)
 print(c.r)
 
+```
+
+### deque ###
+
+```python 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 print("---------------------deque-----------------------")
 from collections import deque
 q = deque(['a', 'b', 'c'])
 q.append('x')
 q.appendleft('y')
 print(q)
+
+```
+
+### defaultdict ###
+
+```python 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 print("---------------------defaultdict------------------")
 from collections import defaultdict
@@ -48,6 +64,14 @@ dd['key1'] = 'abc'
 print(dd['key1'])
 # key2不存在，返回默认值
 print(dd['key2'])
+
+```
+
+### OrderedDict ###
+
+```python 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 print("---------------------OrderedDict------------------")
 from collections import OrderedDict
@@ -67,6 +91,14 @@ od['x'] = 3
 # 按照插入的Key的顺序返回
 print(list(od.keys()))
 print(list(od.values()))
+
+```
+
+### ChainMap ###
+
+```python 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 print("---------------------ChainMap------------------")
 from collections import ChainMap
@@ -91,6 +123,14 @@ combined = ChainMap(command_line_args, os.environ, defaults)
 # 打印参数:
 print('color=%s' % combined['color'])
 print('user=%s' % combined['user'])
+
+```
+
+### Counter ###
+
+```python 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 print("---------------------Counter------------------")
 # Counter是一个简单的计数器，例如，统计字符出现的个数：
