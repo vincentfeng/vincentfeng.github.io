@@ -33,3 +33,9 @@ public class Main {
     }
 }
 ```
+
+## Micro Server ##
+
+<https://github.com/vincentfeng/micro_repo/tree/master/micro_spark>
+
+自定义的微服务，轻量级别，很多公司都是这么用，不考虑服务注册，抛弃Spring boot+Cloud
